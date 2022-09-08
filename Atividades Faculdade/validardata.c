@@ -1,12 +1,12 @@
 #include <stdio.h>
 
 int meses[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-int dataValida(int, int, int);
+int dia_do_ano(int, int, int);
 int bissexto(int);
 
 int main(void)
 {
-    int dia, mes, ano, dataOk;
+    int dia, mes, ano, dataOk, dia_ano;
 
     printf("Validação de datas\n");
     printf("Informe o dia: ");
@@ -28,6 +28,9 @@ int main(void)
         scanf("%d", &ano);
 
     }
+
+    dia_ano = dia_do_ano(dia, mes, ano);
+    printf("Seu dia do ano eh: %d", dia_ano);
     return 0;
 }
 int bissexto(int aa)
@@ -77,4 +80,19 @@ int dataValida(int dd, int mm, int aa)
         return 0;
     }
     return 1;
+}
+
+int dia_do_ano(int dd, int mm, int aa){
+
+    dataValida(dd, mm, aa);
+    int soma = 0;
+    for(int i = 0; i < mm - 1; i++){
+        soma += meses[i];
+    }
+    soma += dd;
+    if ((mm > 2) && (bissexto(aa))) {
+        soma += 1;
+    }
+
+    return soma;
 }
