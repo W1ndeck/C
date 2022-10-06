@@ -1,24 +1,18 @@
 #include <stdio.h>
+#include <string.h>
 int medir_tamanho_array(char vetor[]);
+char decimais[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-int meses[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-int main(void){
-
-    int tamanho;
-    tamanho = medir_tamanho_array(meses);
-    printf("%d", &tamanho);
+int main(void)
+{
+    int tamanho = 0;
+    tamanho = medir_tamanho_array(decimais);
+    printf("\n%d\n", tamanho);
 
     return 0;
 }
 
-int medir_tamanho_array(char vetor[]){
-
-    int tamano_bits = sizeof(vetor); //retorna numero de bits de uma array
-    int tamanho_tipo = sizeof(vetor[0]); //verifica o tipo que ta presente no vetor
-
-    int tamanho_array = tamano_bits / tamanho_tipo;
-
-    return tamanho_array;
-
+int medir_tam_array_str(char vetor[])
+{
+    return strlen(vetor);
 }
