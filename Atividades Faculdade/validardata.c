@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 int meses[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+char decimais[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 int dia_do_ano(int, int, int);
 int bissexto(int);
 
@@ -26,7 +27,6 @@ int main(void)
         scanf("%d", &mes);
         printf("Informe o ano: ");
         scanf("%d", &ano);
-
     }
 
     dia_ano = dia_do_ano(dia, mes, ano);
@@ -82,17 +82,61 @@ int dataValida(int dd, int mm, int aa)
     return 1;
 }
 
-int dia_do_ano(int dd, int mm, int aa){
+int dia_do_ano(int dd, int mm, int aa)
+{
 
     dataValida(dd, mm, aa);
     int soma = 0;
-    for(int i = 0; i < mm - 1; i++){
+    for (int i = 0; i < mm - 1; i++)
+    {
         soma += meses[i];
     }
     soma += dd;
-    if ((mm > 2) && (bissexto(aa))) {
+    if ((mm > 2) && (bissexto(aa)))
+    {
         soma += 1;
     }
 
     return soma;
+}
+
+int validar_formato_data(char data[11])
+{
+
+    for (int i = 0; i <= 10; i++)
+    {
+
+        if ((i != 2) && (i != 5))
+        {
+            for (int j = 0; j <= 10; j++)
+            {
+
+                if ((j == 10) && (data[i] != decimais[j]))
+                {
+                    return 0;
+                }
+                else if (data[i] == decimais[j])
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    int d1, d2, dd, m1, m2, mm, a1, a2, a3, a4, aa;
+    d1 = data[0] - '0';
+    d2 = data[1] - '0';
+    dd = (d1 * 10) + d2;
+
+    m1 = data[3] - '0';
+    m2 = data[4] - '0';
+    mm = (m1 * 10) + m2;
+
+    a1 = data[6] - '0';
+    a2 = data[7] - '0';
+    a3 = data[8] - '0';
+    a4 = data[9] - '0';
+    aa = (a1 * 1000) + (a2 * 100) + (a3 * 10) + a4;
+
+    return dataValida(dd, mm, aa);
 }
