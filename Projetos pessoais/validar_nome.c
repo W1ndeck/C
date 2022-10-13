@@ -14,7 +14,7 @@ int main(void)
     while (!(validar_letras(nome)))
     {
         printf("Nome invalido!\n");
-        scanf("%[A-Z a-z]", nome);
+        scanf("%s", nome);
         getchar();
     }
 
