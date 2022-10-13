@@ -1,47 +1,57 @@
 #include <stdio.h>
 #include <string.h>
-int validar_dinheiro(char dinheiro[]);
+int validar_dinheiro(char dinheiro[], int tam);
+char decimais[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
 int main(void)
 {
+    char valor[11];
+    int tam;
+    do
+    {
+        printf("\ndigite o valor depositado\n");
+        scanf("%s", valor);
+        getchar();
+        tam = strlen(valor);
+        printf("%d", tam);
 
-    char nome[52];
-    scanf("%s", nome);
-    getchar();
-    int tam = sizeof(nome) / sizeof(nome[1]);
-    printf("%d", tam);
-    printf("%s", nome);
-
+    } while (!(validar_dinheiro(valor, tam)));
+    printf("\nvalor valido\n");
     return 0;
 }
 
-int validar_dinheiro(char dinheiro[])
+int validar_dinheiro(char dinheiro[], int tam)
 {
 
-     for (int i = 0; dinheiro[i] != "\0"; i++)
-     {
+    if ((dinheiro[tam - 3] != ',') && (dinheiro[tam - 3] != '.'))
+    {
+        printf("entrou aqui");
+        return 0;
+    }
+    else
+    {
 
-         if ((dinheiro[] != ",") || (dinheiro[] != "."))
-         {
+        for (int i = 0; (dinheiro[i] != '\0'); i++)
+        {
+            for (int j = 0; j <= 10; j++)
+            {
 
-             return 0;
-         }
-         else
-         {
-             for (int j = 0; j <= 10; j++)
-             {
+                if ((j == 10) && (dinheiro[i] != decimais[j]))
+                {
+                    return 0;
+                }
+                else if (dinheiro[i] == decimais[j])
+                {
+                    break;
+                }
+                else if (i == (tam - 4))
+                {
 
-                 if ((j == 10) && (data[i] != decimais[j]))
-                 {
-                     return 0;
-                 }
-                 else if (data[i] == decimais[j])
-                 {
-                     break;
-                 }
-             }
-         }
-     }
+                    break;
+                }
+            }
+        }
+    }
 
-//     return 0;
-// }
+    return 1;
+}
