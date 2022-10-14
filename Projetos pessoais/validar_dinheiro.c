@@ -25,7 +25,6 @@ int validar_dinheiro(char dinheiro[], int tam)
 
     if ((dinheiro[tam - 3] != ',') && (dinheiro[tam - 3] != '.'))
     {
-        printf("entrou aqui");
         return 0;
     }
     else
@@ -44,7 +43,7 @@ int validar_dinheiro(char dinheiro[], int tam)
                 {
                     break;
                 }
-                else if (i == (tam - 4))
+                else if (i == (tam - 3))
                 {
 
                     break;
