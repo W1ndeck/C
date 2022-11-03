@@ -16,6 +16,8 @@ struct morador
 int menuPrincipal(void);
 Morador *preencheMorador(void);
 void gravaMorador(Morador *);
+void exibeMorador(Morador *);
+void buscaMorador(Morador *);
 
 int main(void)
 {
@@ -33,6 +35,9 @@ int main(void)
             gravaMorador(fulano);
             free(fulano);
             break;
+        case 2:
+
+            fulano = buscaMorador;
 
         default:
             break;
