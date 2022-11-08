@@ -17,7 +17,7 @@ int menuPrincipal(void);
 Morador *preencheMorador(void);
 void gravaMorador(Morador *);
 void exibeMorador(Morador *);
-void buscaMorador(Morador *);
+void buscaMorador(void);
 
 int main(void)
 {
@@ -35,9 +35,10 @@ int main(void)
             gravaMorador(fulano);
             free(fulano);
             break;
-        case 2:
+        case 5:
 
-            fulano = buscaMorador;
+            buscaMorador();
+            break;
 
         default:
             break;
@@ -95,4 +96,42 @@ void gravaMorador(Morador *mor)
     }
     fwrite(mor, sizeof(Morador), 1, fp);
     fclose(fp);
+}
+
+void buscaMorador(void)
+{
+
+    FILE *fp;
+    Morador *mor;
+    fp = fopen("moradores.dat", "rb");
+    if (fp == NULL)
+    {
+        printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
+        printf("Não é possível continuar o programa...\n");
+        exit(1);
+    }
+    printf("\n\n");
+    printf("= = = = = = = = = = = = \n");
+    mor = (Morador *)malloc(sizeof(Morador));
+    while (fread(mor, sizeof(Morador), 1, fp))
+    {
+        if (mor->status == 'm')
+        {
+            exibeMorador(mor);
+        }
+    }
+    fclose(fp);
+    free(mor);
+}
+
+void exibeMorador(Morador *mor)
+{
+
+    system("clear||cls");
+    printf("\nNome: %s", mor->nome);
+    printf("\nCPF: %s", mor->cpf);
+    printf("\nIdade: %s", mor->idade);
+    printf("\nRenda: %s", mor->renda);
+    printf("\nStatus: %c", mor->status);
+    printf("\n");
 }
