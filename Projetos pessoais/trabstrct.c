@@ -17,6 +17,7 @@ int menuPrincipal(void);
 Morador *preencheMorador(void);
 void gravaMorador(Morador *);
 void exibeMorador(Morador *);
+void listaMorador(void);
 void buscaMorador(void);
 
 int main(void)
@@ -35,9 +36,13 @@ int main(void)
             gravaMorador(fulano);
             free(fulano);
             break;
+        case 2:
+            buscaMorador();
+            break;
+
         case 5:
 
-            buscaMorador();
+            listaMorador();
             break;
 
         default:
@@ -98,7 +103,7 @@ void gravaMorador(Morador *mor)
     fclose(fp);
 }
 
-void buscaMorador(void)
+void listaMorador(void)
 {
 
     FILE *fp;
@@ -134,4 +139,79 @@ void exibeMorador(Morador *mor)
     printf("\nRenda: %s", mor->renda);
     printf("\nStatus: %c", mor->status);
     printf("\n");
+}
+
+void buscaMorador(void) {
+  FILE* fp;
+  Morador *mor;
+  int achou;
+  char procurado[15];
+  fp = fopen("moradores.dat", "rb");
+  if (fp == NULL) {
+    printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
+    printf("Não é possível continuar o programa...\n");
+    exit(1);
+  }
+  printf("\n\n");
+  printf("= = = = = = = = = = = \n");
+  printf("Informe o nome do morador a ser buscado: ");
+  scanf(" %14[^\n]", procurado);
+  mor = (Morador*) malloc(sizeof(Morador));
+  achou = 0;
+  while((!achou) && (fread(mor, sizeof(Morador), 1, fp))) {
+   if ((strcmp(mor->nome, procurado) == 0) && (mor->status == 'm')) {
+     achou = 1;
+   }
+  }
+  fclose(fp);
+  if (achou) {
+    exibeMorador(mor);
+  } else {
+    printf("O Morador %s não foi encontrado...\n", procurado);
+  }
+  free(mor);
+}
+
+void excluiMorador(void) {
+  FILE* fp;
+  Morador* mor;
+  int achou;
+  char resp;
+  char procurado[15];
+  fp = fopen("moradores.dat", "r+b");
+  if (fp == NULL) {
+    printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
+    printf("Não é possível continuar o programa...\n");
+    exit(1);
+  }
+  printf("\n\n");
+  printf("= = = = = = = = = = = \n");
+  printf("Informe o nome do Morador a ser apagado: ");
+  scanf(" %14[^\n]", procurado);
+  mor = (Morador*) malloc(sizeof(Morador));
+  achou = 0;
+  while((!achou) && (fread(mor, sizeof(Morador), 1, fp))) {
+   if ((strcmp(mor->nome, procurado) == 0) && (mor->status == 'm')) {
+     achou = 1;
+   }
+  }
+  
+  if (achou) {
+    exibeMorador(mor);
+    getchar();
+    printf("Deseja realmente apagar este morador (s/n)? ");
+    scanf("%c", &resp);
+    if (resp == 's' || resp == 'S') {
+      mor->status = '0';
+      fseek(fp, -1*sizeof(Morador), SEEK_CUR);
+      fwrite(Morador, sizeof(Morador), 1, fp);
+      printf("\nMorador excluído com sucesso!!!\n");
+     } else {
+       printf("\nOk, os dados não foram alterados\n");
+     }
+  } else {
+    printf("O morador %s não foi encontrado...\n", procurado);
+  }
+  fclose(fp);
+  free(mor);
 }
