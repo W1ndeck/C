@@ -1,50 +1,150 @@
-// #include <time.h>
-// char data_atual(void);
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-// int main(void)
-// {
-//     char datas[11]; 
-//     data_atual(datas);
-//     printf("%s" datas);
-//     return 0;
-// }
+int convertDataToInt(char *data, int func);
+int compararDatas(char *datainicial, char *datafinal, char *dataarch);
 
-// char data_atual(void)
-// {
-//     struct tm *datetime;
-//     int idia = datetime->tm_mday;
-//     int imes = datetime->tm_mon + 1;
-//     int iano = datetime->tm_year + 1900;
+int main(void)
+{
+    char data1[11];
+    char data2[11];
+    char data3[11];
+    printf("insira data inicial");
+    scanf("%s", data1);
+    printf("insira data final");
+    scanf("%s", data2);
+    printf("insira a data que quer verificar se esta no intervalo");
+    scanf("%s", data3);
+    int valor = compararDatas(data1, data2, data3);
+    printf("%d", valor);
 
-//     char diac[3];
-//     char mesc[3];
-//     char anoc[5];
+    return 0;
+}
 
-//     if (idia < 10)
-//     {
-//         char aux;
-//         sprintf(aux, "%d", idia);
-//         diac[0] = '0';
-//         diac[1] = aux;
-//     }
-//     else if (imes < 10)
-//     {
+int convertDataToInt(char *data, int func)
+{
 
-//         char aux2;
-//         sprintf(aux2, "%d", imes);
-//         mesc[0] = '0';
-//         mesc[1] = aux2;
-//     }
-//     else
-//     {
-//         sprintf(diac, "%d", idia);
-//         sprintf(mesc, "%d", imes);
-//     }
+    // func = 1 = dia
+    // func = 2 = mes
+    // func = 3 = ano
 
-//     sprintf(anoc, "%d", iano);
+    if (func == 1)
+    {
 
-//     char data_hoje[] = {diac[0], diac[1], '/', mesc[0], mesc[1], '/', anoc[0], anoc[1], anoc[2], anoc[3]};
-    
+        int dia = 0;
+        int aux = 1;
+        for (int i = 1; i >= 0; i--)
+        {
 
-//     // return data_hoje;
-// }
+            dia += (data[i] - '0') * aux;
+            aux *= 10;
+        }
+        return dia;
+    }
+    else if (func == 2)
+    {
+
+        int mes = 0;
+        int aux = 1;
+        for (int i = 4; i >= 3; i--)
+        {
+
+            mes += (data[i] - '0') * aux;
+            aux *= 10;
+        }
+        return mes;
+    }
+    else if (func == 3)
+    {
+
+        int ano = 0;
+        int aux = 1;
+        for (int i = 9; i >= 6; i--)
+        {
+
+            ano += (data[i] - '0') * aux;
+            aux *= 10;
+        }
+        return ano;
+    }
+}
+
+int compararDatas(char *datainicial, char *datafinal, char *dataarch)
+{
+
+    int diaincial, mesinicial, anoinicial, diafinal, mesfinal, anofinal, diaarch, mesarch, anoarch;
+    diaincial = convertDataToInt(datainicial, 1);
+    mesinicial = convertDataToInt(datainicial, 2);
+    anoinicial = convertDataToInt(datainicial, 3);
+
+    diafinal = convertDataToInt(datafinal, 1);
+    mesfinal = convertDataToInt(datafinal, 2);
+    anofinal = convertDataToInt(datafinal, 3);
+
+    diaarch = convertDataToInt(dataarch, 1);
+    mesarch = convertDataToInt(dataarch, 2);
+    anoarch = convertDataToInt(dataarch, 3);
+
+    if ((anoarch <= anofinal) && (anoarch >= anoinicial) && (anoinicial < anofinal))
+    {
+        if ((anoarch == anofinal) && (mesarch == mesfinal) && (diaarch <= diafinal))
+        {
+            return 1;
+        }
+        else if ((anoarch == anofinal) && (mesarch < mesfinal))
+        {
+
+            return 1;
+        }
+        else if ((anoarch == anoinicial) && (mesarch == mesinicial) && (diaarch >= diaincial))
+        {
+
+            return 1;
+        }
+        else if ((anoarch == anoinicial) && (mesarch > mesinicial))
+        {
+
+            return 1;
+        }
+        else if (((anofinal - anoinicial) > 1) && (anoarch < anofinal) && (anoarch > anoinicial))
+        {
+
+            return 1;
+        }
+        else
+        {
+
+            return 0;
+        }
+    }
+    else if ((anoinicial == anofinal) && (anoarch == anoinicial))
+    {
+
+        if ((mesinicial == mesfinal) && (mesinicial == mesarch) && (diaarch >= diaincial) && (diaarch <= diafinal))
+        {
+
+            return 1;
+        }
+        else if ((mesarch > mesinicial) && (mesarch == mesfinal) && (diaarch <= diafinal))
+        {
+
+            return 1;
+        }
+        else if ((mesarch < mesfinal) && (mesarch == mesinicial) && (diaarch >= diaincial))
+        {
+
+            return 1;
+        }
+        else
+        {
+
+            return 0;
+        }
+    }
+    else
+    {
+
+        return 0;
+    }
+}
